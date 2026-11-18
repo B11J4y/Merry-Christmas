@@ -1,0 +1,199 @@
+/* ==========================================================================
+   ASCII Christmas Tree — terminal-warm, full-bleed night scene
+   ========================================================================== */
+
+:root {
+  --ink: #04070c;
+  --hud: #7d8b9e;
+  --hud-dim: #4d5a6b;
+  --hud-bright: #c8d4e4;
+  --gold: #e7c06a;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--ink);
+}
+
+body {
+  overflow: hidden;
+  color: var(--hud);
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 34%, #061019 0%, #04080f 46%, #02050a 100%);
+}
+
+#scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------- overlay */
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  color: var(--hud);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* elapsed time, upper right, like a running log */
+.clock {
+  position: absolute;
+  top: max(10px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--hud);
+  opacity: 0.82;
+}
+
+.clock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 9px rgba(231, 192, 106, 0.85);
+  animation: clock-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes clock-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.86); }
+  50%      { opacity: 1;    transform: scale(1); }
+}
+
+/* lower-left diagnostics */
+.stats {
+  position: absolute;
+  left: max(14px, env(safe-area-inset-left));
+  bottom: max(10px, env(safe-area-inset-bottom));
+  margin: 0;
+  display: grid;
+  gap: 0;
+  font-size: 10.5px;
+  color: var(--hud-dim);
+  opacity: 0.86;
+}
+
+.stats div { display: flex; gap: 0.7em; }
+
+.stats dt {
+  min-width: 7.4em;
+  color: #55647a;
+}
+
+.stats dd {
+  margin: 0;
+  color: #8e9db1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* lower-right controls — small, quiet, keyboard friendly */
+.actions {
+  position: absolute;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(8px, env(safe-area-inset-bottom));
+  display: flex;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+.actions button {
+  appearance: none;
+  border: 1px solid rgba(120, 140, 165, 0.22);
+  border-radius: 3px;
+  background: rgba(6, 12, 20, 0.55);
+  color: #6f7f93;
+  font: inherit;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  padding: 4px 8px 3px;
+  cursor: pointer;
+  transition: color 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.actions button:hover,
+.actions button:focus-visible {
+  color: var(--hud-bright);
+  border-color: rgba(160, 180, 210, 0.5);
+  background: rgba(14, 24, 38, 0.8);
+  outline: none;
+}
+
+.actions button:focus-visible {
+  box-shadow: 0 0 0 1px rgba(173, 204, 255, 0.45);
+}
+
+.actions button[aria-pressed="true"] {
+  color: var(--gold);
+  border-color: rgba(231, 192, 106, 0.4);
+}
+
+/* ------------------------------------------------------------ utilities */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.noscript {
+  position: absolute;
+  inset: auto 0 42% 0;
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: #93a3b8;
+}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 560px), (max-height: 620px) {
+  .hud { font-size: 10px; }
+  .clock { font-size: 10px; }
+  .stats { font-size: 9.5px; gap: 0; }
+  .stats dt { min-width: 6.6em; }
+  .actions button { font-size: 9.5px; padding: 3px 6px; }
+}
+
+@media (max-height: 560px) {
+  /* keep the bottom two rows from crowding the greeting on short screens */
+  .stats { font-size: 9px; }
+}
+
+/* ----------------------------------------------------------------- motion */
+@media (prefers-reduced-motion: reduce) {
+  .clock-dot { animation: none; opacity: 0.8; }
+  .actions button { transition: none; }
+}
+
+/* static mode for reduced motion: the replay control stays useful, pause does not */
+.stage.is-static #btn-pause { display: none; }

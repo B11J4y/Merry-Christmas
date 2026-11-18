@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#04070c">
+  <title>ASCII Christmas Tree — a procedural winter scene</title>
+  <meta name="description" content="A fully procedural ASCII Christmas tree: thousands of typed glyphs, gold garlands, baubles, gifts and a glowing star. Canvas + plain JavaScript, no build step.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="stage" id="stage">
+    <canvas id="scene" role="img"
+      aria-label="A large Christmas tree drawn with thousands of colored keyboard characters, standing in a starry winter night. Golden garlands spiral around it, red and gold baubles and blinking lights hang from the branches, a golden star glows at the top and small wrapped gifts sit at its base, with the words Merry Christmas underneath."
+      aria-describedby="scene-desc"></canvas>
+
+    <p id="scene-desc" class="visually-hidden">
+      Animated procedural artwork. A tree made of monospaced characters grows from its tip
+      downward and outward between two and six seconds, golden tinsel garlands wind around the
+      cone, colored ornaments and twinkling lights appear, gifts materialize at the foot, a
+      golden star ignites at the top, and the greeting “Merry Christmas” is typed out in
+      red, gold and green letters. The tree then turns slowly and sparkles.
+    </p>
+
+    <div class="hud">
+      <p class="clock" aria-hidden="true">
+        <span class="clock-dot"></span>t <span id="clock-value">0.00</span>s
+      </p>
+
+      <dl class="stats" aria-hidden="true">
+        <div><dt>rotation</dt><dd id="stat-rotation">0.00°</dd></div>
+        <div><dt>lights</dt><dd id="stat-lights">0</dd></div>
+        <div><dt>letters</dt><dd id="stat-letters">0</dd></div>
+      </dl>
+
+      <div class="actions">
+        <button type="button" id="btn-pause" aria-label="Pause animation" aria-pressed="false">pause</button>
+        <button type="button" id="btn-replay" aria-label="Replay animation from the beginning">replay</button>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="noscript">This winter scene is drawn with JavaScript. Enable it to see the tree.</p>
+    </noscript>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
